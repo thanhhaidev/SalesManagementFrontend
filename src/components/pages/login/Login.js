@@ -11,7 +11,8 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.signInAction(values, this.props.hashHistory);
+        this.props.signInAction(values, this.props.history);
+        console.log(this.props);
       }
     });
   };
@@ -20,6 +21,21 @@ class Login extends Component {
     if (this.props.errorMessage) {
       return <Alert message={this.props.errorMessage} type="error" showIcon />;
     }
+  }
+
+  componentDidMount() {
+    window.addEventListener("beforeunload", this.keepOnPage);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.keepOnPage);
+  }
+
+  keepOnPage(e) {
+    var message =
+      "Warning!\n\nNavigating away from this page will delete your text if you haven't already saved it.";
+    e.returnValue = message;
+    return message;
   }
 
   render() {

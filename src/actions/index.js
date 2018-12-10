@@ -2,7 +2,7 @@ import * as types from "../constants/ActionTypes";
 import * as Config from "../constants/Config";
 import axios from "axios";
 
-export function signInAction({ username, password }, hashHistory) {
+export const signInAction = ({ username, password }, history) => {
   return async dispatch => {
     try {
       const res = await axios.post(`${Config.API_URL}/user/login`, {
@@ -14,7 +14,7 @@ export function signInAction({ username, password }, hashHistory) {
         type: types.AUTHENTICATED
       });
       localStorage.setItem("user", res.data.token);
-      hashHistory.push("/dashboard");
+      history.push("/dashboard");
     } catch (error) {
       dispatch({
         type: types.AUTHENTICATION_ERROR,
@@ -22,11 +22,11 @@ export function signInAction({ username, password }, hashHistory) {
       });
     }
   };
-}
+};
 
-export function signOutAction() {
+export const signOutAction = () => {
   localStorage.clear();
   return {
     type: types.UNAUTHENTICATED
   };
-}
+};
