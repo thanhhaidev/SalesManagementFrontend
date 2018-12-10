@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 var path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
@@ -7,10 +8,12 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: {
+        main: ['@babel/polyfill', './src/index.js'],
+    },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "main.js"
+        filename: "[name].js"
     },
     module: {
         rules: [{
@@ -23,19 +26,16 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [{
-                        loader: "style-loader"
-                    },
-                    {
-                        loader: "css-loader",
-                        options: {
-                            modules: true,
-                            importLoaders: 1,
-                            localIdentName: "[name]_[local]_[hash:base64]",
-                            sourceMap: true,
-                            minimize: true
-                        }
-                    }
-                ]
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }]
+            },
+            {
+                test: /\.(ttf|eot|svg|png|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: [{
+                    loader: 'file-loader'
+                }]
             }
         ]
     },
