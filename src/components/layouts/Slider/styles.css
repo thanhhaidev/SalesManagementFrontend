@@ -12,7 +12,7 @@
 
 #components-layout-demo-custom-trigger .logo {
   z-index: 1;
-  height: 72px;
+  width: 72px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
